@@ -70,7 +70,7 @@ class KNNR:
         ind=[-i for i in range(m*tau,0,-tau)]
         while len(pred)<n:
             window=list(np.nan_to_num(s[ind],np.mean(s[ind])))
-            val=self.regressor.predict([window])
+            val=self.regressor.predict(np.array([window]))
             pred.append(val[0])
             s=np.append(s,val[0])
         return np.array(pred)
