@@ -86,10 +86,11 @@ class KNNR:
 
 
 class RidgeGen:
-    def __init__(self, m=3, tau=1, prediction_size=10):
+    def __init__(self, m=3, tau=1, alpha=0, prediction_size=10):
         self.m = m
         self.tau = tau
         self.prediction_size = prediction_size
+        self.alpha = alpha
 
     def _forecast(self, n, s):
         pred = []
@@ -109,9 +110,12 @@ class RidgeGen:
 
     def fit(self, data, target):
         self.data, self.target = data, target
-        # a = self.d in ['cosine' and 'brute' or 'auto'
-        self.regressor = ridge()
+        if self.alpha == 0:
+            self.regressor = ridge()
+        else:
+            self.regressor = ridge(alpha=self.alpha/100)
         self.regressor.fit(self.data, self.target)
         return self
+
     def score(self, dataX, dataY):
-        return self.regressor.score(dataX,dataY)
+        return self.regressor.score(dataX, dataY)
